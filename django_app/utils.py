@@ -34,10 +34,12 @@ def login_required_decorator(func):
 def logging_txt_decorator(func):
     def wrapper(*args, **kwargs):
         request: HttpRequest = args[-1]
-        if request.user.username:
-            username = request.user.username
-        else:
+        print(request.user)
+
+        if request.user.is_anonymous:
             username = "Аноним"
+        else:
+            username = request.user.username
         with open("static/log.txt", 'a', encoding="utf-8") as file:
             file.write(f"{username} | {request.path} | {request.method} | {datetime.datetime.now()}\n")
 
